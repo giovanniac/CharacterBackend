@@ -1,6 +1,5 @@
 package br.com.paxtecnologia.backend.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,10 @@ public class CharacterService {
 
 	public void save(final CharacterEntity character) {
 		repository.save(character);
+	}
+
+	public Object findById(Integer id) {
+		return repository.findById(id);
 	}
 
 }

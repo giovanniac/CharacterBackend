@@ -1,13 +1,15 @@
 package br.com.paxtecnologia.backend.controllers;
 
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.paxtecnologia.backend.entity.CharacterEntity;
@@ -23,11 +25,18 @@ public class CharacterController {
 	CharacterService service;
 
 	// Salvar personagem
-	@PostMapping(value = "/personagem/")
-	public @NonNull Long save(final @RequestBody @Valid CharacterEntity character) {
-		log.info("Salvando personagem na database");
+	@RequestMapping(value = "/personagem/", method = RequestMethod.POST)
+	@ResponseBody
+	public @NonNull void save(final @RequestBody @Valid CharacterEntity character) {
+		log.info("Incluindo personagem");
 		service.save(character);
-		return character.getId();
+	}
+
+	// Buscar por ID
+	@RequestMapping(value = "/personagem/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public void findById(@PathVariable("id") int id) {
+		service.findById(id);
 	}
 
 }
