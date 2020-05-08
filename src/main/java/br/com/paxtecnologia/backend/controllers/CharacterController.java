@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.paxtecnologia.backend.entity.Character;
-import br.com.paxtecnologia.backend.repository.CharacterRepository;
+import br.com.paxtecnologia.backend.services.CharacterService;
 
 @RestController
 @RequestMapping("/")
 public class CharacterController {
 
 	@Autowired
-	private CharacterRepository repository;
+	private CharacterService service;
 
 	@GetMapping("/characters")
-	public List<Character> getAllEmployees() {
-		return repository.findAll();
+	public List<Character> getAllCharacters() {
+		return service.getAll();
 
 	}
-	
+
 	@PostMapping("/characters")
-	public List<Character> saveEmployee(@RequestBody Character character) {
-		repository.save(character);
-		return repository.findAll();
+	public List<Character> saveCharacter(@RequestBody Character character) {
+		service.save(character);
+		return service.getAll();
 
 	}
-	
+
 	@GetMapping("/characters/{id}")
 	public ResponseEntity<Character> getCharacterById(@PathVariable(name = "id") Integer id) {
 
-		Optional<Character> optional = repository.findById(id);
+		Optional<Character> optional = service.findById(id);
 
 		if (optional.isPresent()) {
-			Character employee = repository.getOne(id);
-			return new ResponseEntity<>(employee, HttpStatus.OK);
+			Character character = service.getOne(id);
+			return new ResponseEntity<>(character, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
