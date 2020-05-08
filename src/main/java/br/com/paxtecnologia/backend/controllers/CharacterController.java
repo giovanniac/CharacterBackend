@@ -1,42 +1,52 @@
 package br.com.paxtecnologia.backend.controllers;
 
-import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.paxtecnologia.backend.entity.CharacterEntity;
+import br.com.paxtecnologia.backend.entity.Character;
 import br.com.paxtecnologia.backend.services.CharacterService;
-import lombok.NonNull;
 
 @RestController
+@RequestMapping("/")
 public class CharacterController {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
 	@Autowired
-	CharacterService service;
+	private CharacterService service;
 
-	// Salvar personagem
-	@RequestMapping(value = "/personagem/", method = RequestMethod.POST)
-	@ResponseBody
-	public @NonNull void save(final @RequestBody @Valid CharacterEntity character) {
-		log.info("Incluindo personagem");
-		service.save(character);
+	@GetMapping("/characters")
+	public List<Character> getAllCharacters() {
+		return service.getAll();
+
 	}
 
-	// Buscar por ID
-	@RequestMapping(value = "/personagem/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public void findById(@PathVariable("id") int id) {
-		service.findById(id);
+	@PostMapping("/characters")
+	public List<Character> saveCharacter(@RequestBody Character character) {
+		service.save(character);
+		return service.getAll();
+
+	}
+
+	@GetMapping("/characters/{id}")
+	public ResponseEntity<Character> getCharacterById(@PathVariable(name = "id") Integer id) {
+
+		Optional<Character> optional = service.findById(id);
+
+		if (optional.isPresent()) {
+			Character character = service.getOne(id);
+			return new ResponseEntity<>(character, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
 	}
 
 }
