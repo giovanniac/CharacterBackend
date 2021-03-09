@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.paxtecnologia.backend.entity.Character;
+import br.com.paxtecnologia.backend.entity.CharacterEntity;
 import br.com.paxtecnologia.backend.services.CharacterService;
 
 @RestController
@@ -24,25 +24,25 @@ public class CharacterController {
 	private CharacterService service;
 
 	@GetMapping("/characters")
-	public List<Character> getAllCharacters() {
+	public List<CharacterEntity> getAllCharacters() {
 		return service.getAll();
 
 	}
 
 	@PostMapping("/characters")
-	public List<Character> saveCharacter(@RequestBody Character character) {
+	public List<CharacterEntity> saveCharacter(@RequestBody CharacterEntity character) {
 		service.save(character);
 		return service.getAll();
 
 	}
 
 	@GetMapping("/characters/{id}")
-	public ResponseEntity<Character> getCharacterById(@PathVariable(name = "id") Integer id) {
+	public ResponseEntity<CharacterEntity> getCharacterById(@PathVariable(name = "id") Integer id) {
 
-		Optional<Character> optional = service.findById(id);
+		Optional<CharacterEntity> optional = service.findById(id);
 
 		if (optional.isPresent()) {
-			Character character = service.getOne(id);
+			CharacterEntity character = service.getOne(id);
 			return new ResponseEntity<>(character, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);

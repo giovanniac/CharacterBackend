@@ -6,3 +6,4 @@ CREATE TABLE character (
 );
 
 INSERT INTO character VALUES (0,'Mickey');
+INSERT INTO character VALUES (1,'Jotaro');
