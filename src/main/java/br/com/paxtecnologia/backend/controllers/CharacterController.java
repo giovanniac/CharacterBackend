@@ -17,26 +17,26 @@ import br.com.paxtecnologia.backend.entity.CharacterEntity;
 import br.com.paxtecnologia.backend.services.CharacterService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/characters")
 public class CharacterController {
 
 	@Autowired
 	private CharacterService service;
 
-	@GetMapping("/characters")
+	@GetMapping
 	public List<CharacterEntity> getAllCharacters() {
 		return service.getAll();
 
 	}
 
-	@PostMapping("/characters")
+	@PostMapping
 	public List<CharacterEntity> saveCharacter(@RequestBody CharacterEntity character) {
 		service.save(character);
 		return service.getAll();
 
 	}
 
-	@GetMapping("/characters/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<CharacterEntity> getCharacterById(@PathVariable(name = "id") Integer id) {
 
 		Optional<CharacterEntity> optional = service.findById(id);
